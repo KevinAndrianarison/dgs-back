@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::delete('/authors/{id}', [AuthorController::class, 'destroy']);
 Route::apiResource('products', ProductController::class);
 
 
+Route::apiResource('files', FileController::class);
+
+
+
 Route::get('/books', [BookController::class, 'index']);
 Route::post('/books', [BookController::class, 'store']);
 Route::get('/books/{id}', [BookController::class, 'show']);
@@ -26,7 +31,7 @@ Route::put('/books/{id}', [BookController::class, 'update']);
 Route::delete('/books/{id}', [BookController::class, 'destroy']);
 
 
-// Route::apiResource('admins', AdminController::class);   // Sin pas de JWT
+Route::apiResource('admins', AdminController::class);   // Sin pas de JWT
 Route::apiResource('roles', RoleController::class);
 
 Route::post('admins/{adminId}/roles', [AdminController::class, 'attachRole']);
@@ -40,9 +45,10 @@ Route::get('roles/{roleId}/admins', [RoleController::class, 'getRoleUsers']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+
 Route::middleware('auth:api')->group(function () {
     Route::get('profil', [AuthController::class, 'profil']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::apiResource('admins', AdminController::class);    // Si avec JWT
+    // Route::apiResource('admins', AdminController::class);    // Si avec JWT
 
 });
