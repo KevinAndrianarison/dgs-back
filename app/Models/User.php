@@ -45,6 +45,16 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+    
+    public function region()
+    {
+    return $this->belongsTo(Region::class);
+    }
+
+    public function materielsResponsable()
+    {
+    return $this->hasMany(Materiel::class, 'responsable_id');
+    }
 
     public function getJWTIdentifier()
     {
