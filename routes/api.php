@@ -41,6 +41,7 @@ Route::get('admins/{adminId}/roles', [AdminController::class, 'getUserRoles']);
 Route::get('roles/{roleId}/admins', [RoleController::class, 'getRoleUsers']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('getAllUsers', [AuthController::class, 'getAllUsers']);
 
 
 Route::apiResource('regions', RegionController::class);
@@ -57,5 +58,4 @@ Route::middleware('auth:api')->group(function () {
     Route::get('profil', [AuthController::class, 'profil']);
     Route::post('logout', [AuthController::class, 'logout']);
     // Route::apiResource('admins', AdminController::class); 
-
 });

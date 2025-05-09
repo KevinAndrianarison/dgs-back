@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
-
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -52,21 +52,46 @@ class AuthController extends Controller
         //
     }
 
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
+
     public function register(Request $request)
     {
-
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'nullable',
-            'password' => 'required',
+            'password' => 'nullable',
+            'role' => 'required',
+            'numeros' => 'nullable',
+            'region_id' => 'nullable|exists:regions,id',
         ]);
-
+    
         $user = User::create([
             'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
+            'email' => $validatedData['email'] ?? null,
+            'role' => $validatedData['role'],
+            'numeros' => $validatedData['numeros'] ?? null,
+            'region_id' => $validatedData['region_id'] ?? null,
+            'password' => isset($validatedData['password']) ? bcrypt($validatedData['password']) : null,
         ]);
-
+            
+        if (!empty($user->email) && !empty($validatedData['password'])) {
+    
+            $messageContent = "Bonjour,\n\n" .
+                "Votre compte a été créé avec succès !\n" .
+                "Voici votre mot de passe : {$validatedData['password']}\n" .
+                "Vous pouvez le changer à tout moment depuis votre espace personnel.\n\n" .
+                "Cordialement.";
+    
+            Mail::raw($messageContent, function ($message) use ($user) {
+                $message->to($user->email)
+                        ->subject("Création de votre compte");
+            });
+        }
+    
         return response()->json($user, 201);
     }
 
