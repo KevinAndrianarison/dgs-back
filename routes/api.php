@@ -42,6 +42,7 @@ Route::get('roles/{roleId}/admins', [RoleController::class, 'getRoleUsers']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('getAllUsers', [AuthController::class, 'getAllUsers']);
+Route::delete('destroy/{idUser}', [AuthController::class, 'destroy']);
 
 
 Route::apiResource('regions', RegionController::class);

@@ -47,9 +47,14 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $idUser)
     {
-        //
+        $user = User::find($idUser);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+        $user->delete();
+        return response()->json(['message' => 'Utilisateur supprimé avec succès']);
     }
 
     public function getAllUsers()
