@@ -46,6 +46,7 @@ Route::delete('destroy/{idUser}', [AuthController::class, 'destroy']);
 
 
 Route::apiResource('regions', RegionController::class);
+Route::post('regions/destroy-multiple', [RegionController::class, 'destroyMultiple']);
 Route::apiResource('categories', CategorieController::class);
 Route::apiResource('types', TypeMaterielController::class);
 Route::apiResource('sources', SourceController::class);
