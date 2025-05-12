@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RegionController;
 use App\Http\Controllers\Api\CategorieController;
 use App\Http\Controllers\Api\TypeMaterielController;
+use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\SourceController;
 use App\Http\Controllers\Api\ReferenceController;
 use App\Http\Controllers\Api\MaterielController;
@@ -47,9 +48,20 @@ Route::delete('destroy/{idUser}', [AuthController::class, 'destroy']);
 
 Route::apiResource('regions', RegionController::class);
 Route::post('regions/destroy-multiple', [RegionController::class, 'destroyMultiple']);
+
+Route::delete('categories/destroy-multiple', [CategorieController::class, 'destroyMultiple']);
 Route::apiResource('categories', CategorieController::class);
-Route::apiResource('types', TypeMaterielController::class);
+
+Route::delete('types/destroy-multiple', [TypeController::class, 'destroyMultiple']);
+Route::apiResource('types', TypeController::class);
+
+Route::delete('types-materiels/destroy-multiple', [TypeMaterielController::class, 'destroyMultiple']);
+Route::apiResource('types-materiels', TypeMaterielController::class);
+
+Route::delete('sources/destroy-multiple', [SourceController::class, 'destroyMultiple']);
 Route::apiResource('sources', SourceController::class);
+
+Route::delete('references/destroy-multiple', [ReferenceController::class, 'destroyMultiple']);
 Route::apiResource('references', ReferenceController::class);
 Route::apiResource('materiels', MaterielController::class);
 Route::apiResource('supplies', SupplyController::class);

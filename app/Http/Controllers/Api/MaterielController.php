@@ -23,6 +23,12 @@ class MaterielController extends Controller
     public function store(Request $request)
     {
         //
+        \Log::info('Données reçues:', $request->all());
+        
+        // Vérifier si le type existe
+        $type = \App\Models\TypeMateriel::find($request->type_id);
+        \Log::info('Type trouvé:', ['type' => $type]);
+        
         $materiel = Materiel::create($request->all());
         return response()->json($materiel, 201);
     }

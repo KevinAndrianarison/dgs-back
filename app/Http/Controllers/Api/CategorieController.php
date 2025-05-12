@@ -53,7 +53,26 @@ class CategorieController extends Controller
     public function destroy(string $id)
     {
         //
-        Categorie::destroy($id); 
+        $categorie = Categorie::findOrFail($id);
+        $categorie->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     */
+    public function destroyMultiple(Request $request)
+    {
+        $request->validate([
+            'category_ids' => 'required|array',
+            'category_ids.*' => 'exists:categories,id'
+        ]);
+
+        try {
+            Categorie::whereIn('id', $request->category_ids)->delete();
+            return response()->json(['message' => 'Catégories supprimées avec succès']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors de la suppression des catégories'], 500);
+        }
     }
 }

@@ -53,7 +53,26 @@ class ReferenceController extends Controller
     public function destroy(string $id)
     {
         //
-        Reference::destroy($id); 
+        $reference = Reference::findOrFail($id);
+        $reference->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     */
+    public function destroyMultiple(Request $request)
+    {
+        $request->validate([
+            'reference_ids' => 'required|array',
+            'reference_ids.*' => 'exists:references,id'
+        ]);
+
+        try {
+            Reference::whereIn('id', $request->reference_ids)->delete();
+            return response()->json(['message' => 'Références supprimées avec succès']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors de la suppression des références'], 500);
+        }
     }
 }
