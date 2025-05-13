@@ -53,7 +53,26 @@ class SourceController extends Controller
     public function destroy(string $id)
     {
         //
-        Source::destroy($id);
+        $source = Source::findOrFail($id);
+        $source->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     */
+    public function destroyMultiple(Request $request)
+    {
+        $request->validate([
+            'source_ids' => 'required|array',
+            'source_ids.*' => 'exists:sources,id'
+        ]);
+
+        try {
+            Source::whereIn('id', $request->source_ids)->delete();
+            return response()->json(['message' => 'Sources supprimées avec succès']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors de la suppression des sources'], 500);
+        }
     }
 }

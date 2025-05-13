@@ -59,7 +59,15 @@ class TypeMaterielController extends Controller
     public function destroy(string $id)
     {
         //
-        TypeMateriel::destroy($id);
+        $type = TypeMateriel::findOrFail($id);
+        $type->delete();
         return response()->json(null, 204);
+    }
+
+    public function destroyMultiple(Request $request)
+    {
+        $ids = $request->input('ids');
+        TypeMateriel::whereIn('id', $ids)->delete();
+        return response()->json(['message' => 'Types supprimés avec succès']);
     }
 }

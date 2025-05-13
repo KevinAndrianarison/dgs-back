@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TypeMateriel extends Model
 {
     use HasFactory;
+    protected $table = 'types_materiels';
     protected $fillable = ['categorie_id', 'nom'];
 
     public function categorie()
