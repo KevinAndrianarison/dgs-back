@@ -69,7 +69,11 @@ Route::apiResource('vehicules', VehiculeUtilisationController::class);
 
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('profil', [AuthController::class, 'profil']);
+    Route::get('user', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('update-photo', [AuthController::class, 'updatePhoto']);
+    Route::put('update-user', [AuthController::class, 'updateUser']);
+    Route::put('update-password', [AuthController::class, 'updatePassword']);
+    Route::post('update-photo', [AuthController::class, 'updatePhoto']);
     // Route::apiResource('admins', AdminController::class); 
 });
