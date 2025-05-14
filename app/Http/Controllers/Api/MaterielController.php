@@ -14,7 +14,7 @@ class MaterielController extends Controller
     public function index()
     {
         //
-        return response()->json(Materiel::all());
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable'])->get());
     }
 
     /**
@@ -23,12 +23,7 @@ class MaterielController extends Controller
     public function store(Request $request)
     {
         //
-        \Log::info('Données reçues:', $request->all());
-        
-        // Vérifier si le type existe
         $type = \App\Models\TypeMateriel::find($request->type_id);
-        \Log::info('Type trouvé:', ['type' => $type]);
-        
         $materiel = Materiel::create($request->all());
         return response()->json($materiel, 201);
     }
@@ -47,10 +42,20 @@ class MaterielController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $materiel = Materiel::findOrFail($id);
-        $materiel->update($request->all());
-        return response()->json($materiel); 
+        
+        // Récupérer uniquement les champs qui sont présents dans la requête
+        $validFields = $request->only([
+            'numero', 'categorie_id', 'type_id', 'marque', 'caracteristiques', 
+            'etat', 'montant', 'numero_serie', 'numero_imei', 'region_id', 
+            'responsable_id', 'date_acquisition', 'lieu_affectation', 
+            'source_id', 'reference_id'
+        ]);
+
+        // Ne mettre à jour que les champs présents
+        $materiel->update($validFields);
+
+        return response()->json($materiel);
     }
 
     /**
