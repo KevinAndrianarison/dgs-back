@@ -25,7 +25,7 @@ class AdminController extends Controller
     {
         //
         $validated = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required',
         ]);
 
         $admin = Admin::create($validated);
@@ -48,7 +48,7 @@ class AdminController extends Controller
     public function update(Request $request, Admin $admin)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required',
         ]);
 
         $admin->update($validated);

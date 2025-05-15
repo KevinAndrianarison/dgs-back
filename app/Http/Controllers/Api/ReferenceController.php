@@ -23,7 +23,7 @@ class ReferenceController extends Controller
     public function store(Request $request)
     {
         //
-        $reference = Reference::create($request->validate(['nom' => 'required|string|max:255']));
+        $reference = Reference::create($request->validate(['nom' => 'required']));
         return response()->json($reference, 201);
     }
 

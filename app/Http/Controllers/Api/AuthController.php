@@ -167,9 +167,9 @@ class AuthController extends Controller
         $value = $request->input('value');
         
         $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'numeros' => 'nullable|string|max:255'
+            'name' => 'required',
+            'email' => 'required' . $user->id,
+            'numeros' => 'nullable'
         ];
 
         if (!array_key_exists($field, $rules)) {
@@ -202,7 +202,7 @@ class AuthController extends Controller
         
         $validatedData = $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:6|different:current_password',
+            'new_password' => 'required|different:current_password',
             'confirm_password' => 'required|same:new_password'
         ]);
 
@@ -225,7 +225,7 @@ class AuthController extends Controller
         $user = auth()->user();
         
         $validatedData = $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'photo' => 'required|image|mimes:jpeg,png,jpg'
         ]);
 
         // Supprimer l'ancienne photo si elle existe

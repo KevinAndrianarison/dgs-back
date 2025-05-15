@@ -23,7 +23,7 @@ class SourceController extends Controller
     public function store(Request $request)
     {
         //
-        $source = Source::create($request->validate(['nom' => 'required|string|max:255']));
+        $source = Source::create($request->validate(['nom' => 'required']));
         return response()->json($source, 201);
     }
 

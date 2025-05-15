@@ -18,8 +18,8 @@ class TypeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'nom' => 'required',
+            'description' => 'nullable'
         ]);
 
         if ($validator->fails()) {
@@ -38,8 +38,8 @@ class TypeController extends Controller
     public function update(Request $request, Type $type)
     {
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'nom' => 'required',
+            'description' => 'nullable'
         ]);
 
         if ($validator->fails()) {

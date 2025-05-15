@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Materiel;
+use App\Models\TypeMateriel;
 
 class MaterielController extends Controller
 {
@@ -23,7 +24,7 @@ class MaterielController extends Controller
     public function store(Request $request)
     {
         //
-        $type = \App\Models\TypeMateriel::find($request->type_id);
+        $type = TypeMateriel::find($request->type_id);
         $materiel = Materiel::create($request->all());
         return response()->json($materiel, 201);
     }

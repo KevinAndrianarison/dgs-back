@@ -25,7 +25,7 @@ class FileController extends Controller
     //
     {
         $validatedData = $request->validate([
-            'titre' => 'required|string',
+            'titre' => 'required',
             'file' => 'required|file|mimes:jpg,png,pdf,docx'
         ]);
 
@@ -66,7 +66,7 @@ class FileController extends Controller
     //
     {
         $validatedData = $request->validate([
-            'titre' => 'required|string',
+            'titre' => 'required',
             'file' => 'nullable|file|mimes:jpg,png,pdf,docx'
         ]);
 
