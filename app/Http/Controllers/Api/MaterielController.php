@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Materiel;
 use App\Models\TypeMateriel;
+use App\Models\Reference;
 
 class MaterielController extends Controller
 {
@@ -24,8 +25,14 @@ class MaterielController extends Controller
     public function store(Request $request)
     {
         //
-        $type = TypeMateriel::find($request->type_id);
-        $materiel = Materiel::create($request->all());
+        $reference = Reference::findOrFail($request->reference_id);
+        $count = Materiel::where('reference_id', $request->reference_id)->count();
+        $numero = $reference->nom . '-' . ($count + 1);
+        
+        $data = $request->all();
+        $data['numero'] = $numero;
+        
+        $materiel = Materiel::create($data);
         return response()->json($materiel, 201);
     }
 
