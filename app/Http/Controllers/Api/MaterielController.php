@@ -19,6 +19,14 @@ class MaterielController extends Controller
         return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable'])->get());
     }
 
+    public function getMaterielParIdRegion($regionId)
+    {
+    $materiels = Materiel::where('region_id', $regionId)
+        ->with(['categorie', 'type', 'source', 'reference'])
+        ->get();
+    return response()->json($materiels);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

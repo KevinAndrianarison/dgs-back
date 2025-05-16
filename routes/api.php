@@ -57,6 +57,7 @@ Route::apiResource('types', TypeController::class);
 
 Route::delete('types-materiels/destroy-multiple', [TypeMaterielController::class, 'destroyMultiple']);
 Route::apiResource('types-materiels', TypeMaterielController::class);
+Route::get('materiels/region/{regionId}', [MaterielController::class, 'getMaterielParIdRegion']);
 
 Route::delete('sources/destroy-multiple', [SourceController::class, 'destroyMultiple']);
 Route::apiResource('sources', SourceController::class);
