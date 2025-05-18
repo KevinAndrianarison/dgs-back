@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Region;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -131,16 +132,18 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->createNewToken($token);
+        return $this->createNewToken($token, Auth::user()->region_id);
     }
 
-    public function createNewToken($token)
+    public function createNewToken($token, $regionId)
     {
+        $region = Region::find($regionId);
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'region' => $region,
         ]);
     }
     public function profil()
@@ -157,8 +160,12 @@ class AuthController extends Controller
     public function getUser()
     {
         $user = auth()->user();
-        return response()->json($user);
+        return response()->json([
+            'user' => $user,
+            'region' => $user->region // Accède directement à la région
+        ]);
     }
+    
 
     public function updateUser(Request $request)
     {
