@@ -22,7 +22,7 @@ class MaterielController extends Controller
     public function getMaterielParIdRegion($regionId)
     {
     $materiels = Materiel::where('region_id', $regionId)
-        ->with(['categorie', 'type', 'source', 'reference'])
+        ->with(['categorie', 'type', 'source', 'reference', 'region', 'responsable'])
         ->get();
     return response()->json($materiels);
     }
