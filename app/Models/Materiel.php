@@ -12,7 +12,7 @@ class Materiel extends Model
         'numero', 'numero_reference', 'caracteristiques', 'marque',
         'numero_serie', 'numero_imei', 'montant', 'date_acquisition',
         'date_transfert', 'lieu_affectation', 'etat', 'categorie_id',
-        'type_id', 'source_id', 'reference_id', 'region_id', 'responsable_id'
+        'type_id', 'source_id', 'reference_id', 'region_id', 'responsable_id','appartenance_id'
     ];
 
     public function categorie() { return $this->belongsTo(Categorie::class); }
@@ -21,6 +21,7 @@ class Materiel extends Model
     public function reference() { return $this->belongsTo(Reference::class); }
     public function region() { return $this->belongsTo(Region::class); }
     public function responsable() { return $this->belongsTo(User::class, 'responsable_id'); }
+    public function appartenance() { return $this->belongsTo(Appartenance::class, 'appartenance_id'); }
 
     public function utilisations()
     {

@@ -16,13 +16,13 @@ class MaterielController extends Controller
     public function index()
     {
         //
-        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable'])->get());
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->get());
     }
 
     public function getMaterielParIdRegion($regionId)
     {
     $materiels = Materiel::where('region_id', $regionId)
-        ->with(['categorie', 'type', 'source', 'reference'])
+        ->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])
         ->get();
     return response()->json($materiels);
     }
@@ -65,7 +65,7 @@ class MaterielController extends Controller
             'numero', 'categorie_id', 'type_id', 'marque', 'caracteristiques', 
             'etat', 'montant', 'numero_serie', 'numero_imei', 'region_id', 
             'responsable_id', 'date_acquisition', 'lieu_affectation', 
-            'source_id', 'reference_id'
+            'source_id', 'reference_id', 'appartenance_id'
         ]);
 
         // Ne mettre à jour que les champs présents

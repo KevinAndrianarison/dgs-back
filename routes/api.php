@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ReferenceController;
 use App\Http\Controllers\Api\MaterielController;
 use App\Http\Controllers\Api\SupplyController;
 use App\Http\Controllers\Api\VehiculeUtilisationController;
+use App\Http\Controllers\Api\AppartenanceController;
 
 
 
@@ -45,9 +46,12 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('getAllUsers', [AuthController::class, 'getAllUsers']);
 Route::delete('destroy/{idUser}', [AuthController::class, 'destroy']);
 
-
 Route::apiResource('regions', RegionController::class);
 Route::post('regions/destroy-multiple', [RegionController::class, 'destroyMultiple']);
+
+
+Route::delete('appartenances/destroy-multiple', [AppartenanceController::class, 'destroyMultiple']);
+Route::apiResource('appartenances', AppartenanceController::class);
 
 Route::delete('categories/destroy-multiple', [CategorieController::class, 'destroyMultiple']);
 Route::apiResource('categories', CategorieController::class);
