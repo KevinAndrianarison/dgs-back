@@ -175,7 +175,7 @@ class AuthController extends Controller
         
         $rules = [
             'name' => 'required',
-            'email' => 'required' . $user->id,
+            'email' => 'required',
             'numeros' => 'nullable'
         ];
 
