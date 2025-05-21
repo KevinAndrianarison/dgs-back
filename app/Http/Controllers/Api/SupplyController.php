@@ -14,7 +14,7 @@ class SupplyController extends Controller
     public function index()
     {
         //
-        return response()->json(Supply::all());
+        return response()->json(Supply::with('region')->get());
     }
 
     /**
@@ -33,7 +33,7 @@ class SupplyController extends Controller
     public function show(string $id)
     {
         //
-        return response()->json(Supply::findOrFail($id));
+        return response()->json(Supply::with('region')->findOrFail($id));
     }
 
     /**
@@ -45,6 +45,12 @@ class SupplyController extends Controller
         $supply = Supply::findOrFail($id);
         $supply->update($request->all());
         return response()->json($supply);
+    }
+
+    public function getByIdRegion(string $regionId)
+    {
+        //
+        return response()->json(Supply::with('region')->where('region_id', $regionId)->get());
     }
 
     /**

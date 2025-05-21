@@ -41,6 +41,8 @@ Route::apiResource('materiels', MaterielController::class);
 Route::get('materiels/region/{regionId}', [MaterielController::class, 'getMaterielParIdRegion']);
 
 Route::apiResource('supplies', SupplyController::class);
+Route::get('supplies/region/{regionId}', [SupplyController::class, 'getByIdRegion']);
+
 Route::apiResource('vehicules', VehiculeUtilisationController::class);
 
 
