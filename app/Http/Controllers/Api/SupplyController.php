@@ -53,6 +53,22 @@ class SupplyController extends Controller
         return response()->json(Supply::with('region')->where('region_id', $regionId)->get());
     }
 
+    public function addOrMinusSupply(Request $request, string $id)
+    {
+        //
+        $supply = Supply::findOrFail($id);
+        if($request->isMinus){
+            if($supply->stock_final < $request->stock_final){
+                return response()->json(['message' => 'Stock final ne peut pas être négatif'], 400);
+            }
+            $supply->stock_final -= $request->stock_final;
+        }else{
+            $supply->stock_final += $request->stock_final;
+        }
+        $supply->save();
+        return response()->json($supply);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

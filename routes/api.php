@@ -42,7 +42,7 @@ Route::get('materiels/region/{regionId}', [MaterielController::class, 'getMateri
 
 Route::apiResource('supplies', SupplyController::class);
 Route::get('supplies/region/{regionId}', [SupplyController::class, 'getByIdRegion']);
-
+Route::put('supplies/add-or-minus/{id}', [SupplyController::class, 'addOrMinusSupply']);
 Route::apiResource('vehicules', VehiculeUtilisationController::class);
 
 
