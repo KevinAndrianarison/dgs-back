@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\MaterielController;
 use App\Http\Controllers\Api\SupplyController;
 use App\Http\Controllers\Api\VehiculeUtilisationController;
 use App\Http\Controllers\Api\AppartenanceController;
-
+use App\Http\Controllers\Api\DetailsSupplyController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -43,7 +43,10 @@ Route::get('materiels/region/{regionId}', [MaterielController::class, 'getMateri
 Route::apiResource('supplies', SupplyController::class);
 Route::get('supplies/region/{regionId}', [SupplyController::class, 'getByIdRegion']);
 Route::put('supplies/add-or-minus/{id}', [SupplyController::class, 'addOrMinusSupply']);
+
 Route::apiResource('vehicules', VehiculeUtilisationController::class);
+
+Route::apiResource('details-supplies', DetailsSupplyController::class);
 
 
 Route::middleware('auth:api')->group(function () {

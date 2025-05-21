@@ -18,4 +18,9 @@ class Supply extends Model
     {
         return $this->belongsTo(Region::class);
     }
+
+    public function detailsSupply()
+    {
+        return $this->hasMany(DetailsSupply::class);
+    }
 }
