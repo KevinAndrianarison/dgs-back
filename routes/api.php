@@ -39,10 +39,12 @@ Route::apiResource('references', ReferenceController::class);
 
 Route::apiResource('materiels', MaterielController::class);
 Route::get('materiels/region/{regionId}', [MaterielController::class, 'getMaterielParIdRegion']);
+Route::put('materiels/change-id-region/{idMateriel}/{idRegion}', [MaterielController::class, 'changeIdRegion']);
 
 Route::apiResource('supplies', SupplyController::class);
 Route::get('supplies/region/{regionId}', [SupplyController::class, 'getByIdRegion']);
 Route::put('supplies/add-or-minus/{id}', [SupplyController::class, 'addOrMinusSupply']);
+Route::put('supplies/share-to-region/{idRegion}/{idSupply}', [SupplyController::class, 'shareSupplyToRegion']);
 
 Route::apiResource('vehicules', VehiculeUtilisationController::class);
 

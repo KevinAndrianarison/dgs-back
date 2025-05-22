@@ -14,7 +14,7 @@ class DetailsSupplyController extends Controller
      */
     public function index()
     {
-        $detailsSupplies = DetailsSupply::with('supply')->get();
+        $detailsSupplies = DetailsSupply::with('supply')->orderBy('date', 'desc')->get();
         return response()->json($detailsSupplies);
     }
 

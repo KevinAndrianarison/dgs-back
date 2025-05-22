@@ -16,13 +16,14 @@ class MaterielController extends Controller
     public function index()
     {
         //
-        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->get());
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->orderBy('date_acquisition', 'desc')->get());
     }
 
     public function getMaterielParIdRegion($regionId)
     {
     $materiels = Materiel::where('region_id', $regionId)
         ->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])
+        ->orderBy('date_acquisition', 'desc')
         ->get();
     return response()->json($materiels);
     }
@@ -44,13 +45,24 @@ class MaterielController extends Controller
         return response()->json($materiel, 201);
     }
 
+    public function changeIdRegion(Request $request, string $idMateriel, string $idRegion)
+    {
+        $materiel = Materiel::findOrFail($idMateriel);
+        $materiel->region_id = $idRegion;
+        if ($request->responsable_id) {
+            $materiel->responsable_id = $request->responsable_id;
+        }
+        $materiel->save();
+        return response()->json($materiel);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
-        return response()->json(Materiel::findOrFail($id));
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->orderBy('date_acquisition', 'desc')->findOrFail($id));
     }
 
     /**

@@ -14,7 +14,9 @@ class SupplyController extends Controller
     public function index()
     {
         //
-        return response()->json(Supply::with('region', 'detailsSupply')->get());
+        return response()->json(Supply::with(['region', 'detailsSupply'=> function($query){
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date', 'desc')->get());
     }
 
     /**
@@ -27,13 +29,27 @@ class SupplyController extends Controller
         return response()->json($supply, 201);
     }
 
+    public function shareSupplyToRegion(Request $request, string $idRegion, string $idSupply)
+    {
+        //
+        $supply = Supply::findOrFail($idSupply);
+        $supply->region_id = $idRegion;
+        if ($request->receptionnaire) {
+            $supply->receptionnaire = $request->receptionnaire;
+        }
+        $supply->save();
+        return response()->json($supply);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
-        return response()->json(Supply::with('region', 'detailsSupply')->findOrFail($id));
+        return response()->json(Supply::with(['region', 'detailsSupply'=> function($query){
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date', 'desc')->findOrFail($id));
     }
 
     /**
@@ -50,7 +66,9 @@ class SupplyController extends Controller
     public function getByIdRegion(string $regionId)
     {
         //
-        return response()->json(Supply::with('region', 'detailsSupply')->where('region_id', $regionId)->get());
+        return response()->json(Supply::with(['region', 'detailsSupply'=> function($query){
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date', 'desc')->where('region_id', $regionId)->get());
     }
 
     public function addOrMinusSupply(Request $request, string $id)
