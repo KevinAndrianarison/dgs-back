@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Categorie extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom'];
+    protected $fillable = ['nom', 'isVehicule'];
 
     public function types()
     {

@@ -14,7 +14,7 @@ class TypeMaterielController extends Controller
     public function index()
     {
         //
-        return response()->json(TypeMateriel::all()); 
+        return response()->json(TypeMateriel::with('categorie')->get()); 
     }
 
     /**
@@ -36,7 +36,7 @@ class TypeMaterielController extends Controller
     public function show(string $id)
     {
         //
-        return response()->json(TypeMateriel::findOrFail($id));
+        return response()->json(TypeMateriel::with('categorie')->findOrFail($id));
     }
 
     /**

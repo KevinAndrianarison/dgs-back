@@ -23,7 +23,12 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         //
+        
         $categorie = Categorie::create($request->validate([ 'nom' => 'required' ]));
+        if ($request->isVehicule == true) {
+            $categorie->isVehicule = true;
+            $categorie->save();
+        }
         return response()->json($categorie, 201);
     }
 

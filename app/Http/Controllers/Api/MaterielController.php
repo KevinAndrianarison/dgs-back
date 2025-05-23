@@ -28,6 +28,21 @@ class MaterielController extends Controller
     return response()->json($materiels);
     }
 
+
+    public function getAllMaterielVehicule()
+    {
+        return response()->json(Materiel::whereHas('categorie', function($query) {
+            $query->where('isVehicule', true);
+        })->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])->orderBy('date_acquisition', 'desc')->get());
+    }
+
+    public function getMaterielVehiculeParIdRegion($regionId)
+    {
+        return response()->json(Materiel::whereHas('categorie', function($query) {
+            $query->where('isVehicule', true);
+        })->where('region_id', $regionId)->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])->orderBy('date_acquisition', 'desc')->get());
+    }
+
     /**
      * Store a newly created resource in storage.
      */
