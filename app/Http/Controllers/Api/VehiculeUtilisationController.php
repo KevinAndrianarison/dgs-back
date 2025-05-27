@@ -33,7 +33,7 @@ class VehiculeUtilisationController extends Controller
     public function show(string $id)
     {
         //
-        return response()->json(VehiculeUtilisation::findOrFail($id));
+        return response()->json(VehiculeUtilisation::with('materiel')->findOrFail($id));
     }
 
     /**

@@ -16,13 +16,17 @@ class MaterielController extends Controller
     public function index()
     {
         //
-        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->orderBy('date_acquisition', 'desc')->get());
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance', 'utilisations'=>function($query) {
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date_acquisition', 'desc')->get());
     }
 
     public function getMaterielParIdRegion($regionId)
     {
     $materiels = Materiel::where('region_id', $regionId)
-        ->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])
+        ->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region', 'utilisations'=>function($query) {
+            $query->orderBy('date', 'desc');
+        }])
         ->orderBy('date_acquisition', 'desc')
         ->get();
     return response()->json($materiels);
@@ -33,14 +37,18 @@ class MaterielController extends Controller
     {
         return response()->json(Materiel::whereHas('categorie', function($query) {
             $query->where('isVehicule', true);
-        })->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])->orderBy('date_acquisition', 'desc')->get());
+        })->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region', 'utilisations'=>function($query) {
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date_acquisition', 'desc')->get());
     }
 
     public function getMaterielVehiculeParIdRegion($regionId)
     {
         return response()->json(Materiel::whereHas('categorie', function($query) {
             $query->where('isVehicule', true);
-        })->where('region_id', $regionId)->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region'])->orderBy('date_acquisition', 'desc')->get());
+        })->where('region_id', $regionId)->with(['categorie', 'type', 'source', 'reference','appartenance', 'responsable', 'region', 'utilisations'=>function($query) {
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date_acquisition', 'desc')->get());
     }
 
     /**
@@ -64,6 +72,7 @@ class MaterielController extends Controller
     {
         $materiel = Materiel::findOrFail($idMateriel);
         $materiel->region_id = $idRegion;
+        $materiel->date_transfert = $request->date_transfert;
         if ($request->responsable_id) {
             $materiel->responsable_id = $request->responsable_id;
         }
@@ -77,7 +86,9 @@ class MaterielController extends Controller
     public function show(string $id)
     {
         //
-        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance'])->orderBy('date_acquisition', 'desc')->findOrFail($id));
+        return response()->json(Materiel::with(['categorie', 'type', 'source', 'reference', 'region', 'responsable','appartenance', 'utilisations'=>function($query) {
+            $query->orderBy('date', 'desc');
+        }])->orderBy('date_acquisition', 'desc')->findOrFail($id));
     }
 
     /**
