@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\SupplyController;
 use App\Http\Controllers\Api\VehiculeUtilisationController;
 use App\Http\Controllers\Api\AppartenanceController;
 use App\Http\Controllers\Api\DetailsSupplyController;
+use App\Http\Controllers\Api\HistoriqueController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
@@ -52,6 +53,7 @@ Route::apiResource('vehicules', VehiculeUtilisationController::class);
 
 Route::apiResource('details-supplies', DetailsSupplyController::class);
 
+Route::apiResource('historiques', HistoriqueController::class);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'getUser']);

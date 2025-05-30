@@ -92,8 +92,11 @@ class SupplyController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        Supply::destroy($id); 
+        $supply = Supply::findOrFail($id);
+        // Delete all related details_supplies records first
+        $supply->detailsSupply()->delete();
+        // Then delete the supply
+        $supply->delete();
         return response()->json(null, 204);
     }
 }

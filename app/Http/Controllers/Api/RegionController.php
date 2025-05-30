@@ -86,16 +86,35 @@ class RegionController extends Controller
             'region_ids.*' => 'exists:regions,id'
         ]);
 
-        // Récupérer les IDs à supprimer
-        $regionIds = $validatedData['region_ids'];
+        try {
+            // Get all regions that we want to delete
+            $regions = Region::whereIn('id', $validatedData['region_ids'])->get();
+            
+            foreach ($regions as $region) {
+                // Delete related supplies and their details
+                foreach ($region->supplies as $supply) {
+                    $supply->detailsSupply()->delete();
+                    $supply->delete();
+                }
+                
+                // Delete related materials
+                $region->materiels()->delete();
+                
+                // Set region_id to null for related users instead of deleting them
+                $region->users()->update(['region_id' => null]);
+                
+                // Finally delete the region
+                $region->delete();
+            }
 
-        // Supprimer les régions
-        $deletedCount = Region::whereIn('id', $regionIds)->delete();
-
-        // Retourner une réponse avec le nombre de régions supprimées
-        return response()->json([
-            'message' => 'Régions supprimées avec succès',
-            'deleted_count' => $deletedCount
-        ], 200);
+            return response()->json([
+                'message' => 'Régions et données associées supprimées avec succès',
+                'deleted_count' => count($regions)
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erreur lors de la suppression des régions: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
