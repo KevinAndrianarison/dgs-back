@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Materiel;
 use App\Models\TypeMateriel;
 use App\Models\Reference;
+use App\Models\Historique;
+use App\Models\Region;
+use Illuminate\Support\Facades\Auth;
 
 class MaterielController extends Controller
 {
@@ -63,6 +66,16 @@ class MaterielController extends Controller
         
         $data = $request->all();
         $data['numero'] = $numero;
+        $nomType = TypeMateriel::findOrFail($request->type_id)->nom;
+        $nomRegion = Region::findOrFail($request->region_id)->nom;
+
+        $historique = Historique::create([
+            'titre' => 'Gestion de stock',
+            'description' => 'Création du matériel ' . $nomType . '-' . $request->caracteristiques . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         
         $materiel = Materiel::create($data);
         return response()->json($materiel, 201);
@@ -77,6 +90,15 @@ class MaterielController extends Controller
             $materiel->responsable_id = $request->responsable_id;
         }
         $materiel->save();
+        $nomType = TypeMateriel::findOrFail($materiel->type_id)->nom;
+        $nomRegion = Region::findOrFail($idRegion)->nom;
+        $historique = Historique::create([
+            'titre' => 'Gestion de stock',
+            'description' => 'Transfert du matériel ' . $nomType . '-' . $materiel->caracteristiques . ' vers la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($materiel);
     }
 
@@ -108,6 +130,15 @@ class MaterielController extends Controller
 
         // Ne mettre à jour que les champs présents
         $materiel->update($validFields);
+        $nomType = TypeMateriel::findOrFail($materiel->type_id)->nom;
+        $nomRegion = Region::findOrFail($materiel->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Gestion de stock',
+            'description' => 'Modification du matériel ' . $nomType . '-' . $materiel->caracteristiques . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
 
         return response()->json($materiel);
     }
@@ -119,6 +150,16 @@ class MaterielController extends Controller
     {
         //
         Materiel::destroy($id); 
+        $materiel = Materiel::findOrFail($id);
+        $nomType = TypeMateriel::findOrFail($materiel->type_id)->nom;
+        $nomRegion = Region::findOrFail($materiel->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Gestion de stock',
+            'description' => 'Suppression du matériel ' . $nomType . '-' . $materiel->caracteristiques . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json(null, 204);
     }
 }

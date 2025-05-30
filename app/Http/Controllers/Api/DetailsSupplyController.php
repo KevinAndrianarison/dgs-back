@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\DetailsSupply;
 use Illuminate\Http\Request;
 use App\Models\Supply;
+use App\Models\Region;
+use App\Models\Historique;
+use Illuminate\Support\Facades\Auth;
 
 class DetailsSupplyController extends Controller
 {
@@ -48,6 +51,13 @@ class DetailsSupplyController extends Controller
             $supply->stock_final -= $request->sortie;
         }
         $supply->save();
+        $nomRegion = Region::findOrFail($supply->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Ajout des stocks ' . $supply->nom . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
         return response()->json($detailsSupply, 201);
     }
 
@@ -90,6 +100,13 @@ class DetailsSupplyController extends Controller
             $supply->stock_final -= $request->sortie;
         }
         $supply->save();
+        $nomRegion = Region::findOrFail($supply->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Modification des stocks ' . $supply->nom . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
         return response()->json($detailsSupply);
     }
 

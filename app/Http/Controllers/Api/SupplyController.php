@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Supply;
+use App\Models\Region;
+use App\Models\Historique;
+use Illuminate\Support\Facades\Auth;
 
 class SupplyController extends Controller
 {
@@ -26,6 +29,14 @@ class SupplyController extends Controller
     {
         //
         $supply = Supply::create($request->all());
+        $nomRegion = Region::findOrFail($request->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Ajout des stocks ' . $request->nom . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($supply, 201);
     }
 
@@ -38,6 +49,14 @@ class SupplyController extends Controller
             $supply->receptionnaire = $request->receptionnaire;
         }
         $supply->save();
+        $nomRegion = Region::findOrFail($idRegion)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Transfert des stocks ' . $supply->nom . ' vers la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($supply);
     }
 
@@ -60,6 +79,14 @@ class SupplyController extends Controller
         //
         $supply = Supply::findOrFail($id);
         $supply->update($request->all());
+        $nomRegion = Region::findOrFail($supply->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Modification des stocks ' . $supply->nom . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($supply);
     }
 
@@ -97,6 +124,14 @@ class SupplyController extends Controller
         $supply->detailsSupply()->delete();
         // Then delete the supply
         $supply->delete();
+        $nomRegion = Region::findOrFail($supply->region_id)->nom;
+        $historique = Historique::create([
+            'titre' => 'Approvisionnement',
+            'description' => 'Suppression des stocks ' . $supply->nom . ' dans la région ' . $nomRegion,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json(null, 204);
     }
 }

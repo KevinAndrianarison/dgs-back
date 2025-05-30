@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VehiculeUtilisation;
+use App\Models\Historique;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Region;
 
 class VehiculeUtilisationController extends Controller
 {
@@ -24,6 +27,13 @@ class VehiculeUtilisationController extends Controller
     {
         //
         $vehicule = VehiculeUtilisation::create($request->all());
+        $historique = Historique::create([
+            'titre' => 'Gestion de véhicule',
+            'description' => 'Ajout de l\'utilisation du véhicule ' . $vehicule->materiel->type->nom . '-' . $vehicule->materiel->caracteristiques,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($vehicule, 201);
     }
 
@@ -44,6 +54,13 @@ class VehiculeUtilisationController extends Controller
         //
         $vehicule = VehiculeUtilisation::findOrFail($id);
         $vehicule->update($request->all());
+        $historique = Historique::create([
+            'titre' => 'Gestion de véhicule',
+            'description' => 'Modification de l\'utilisation du véhicule ' . $vehicule->materiel->type->nom . '-' . $vehicule->materiel->caracteristiques,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json($vehicule);
     }
 
@@ -53,7 +70,15 @@ class VehiculeUtilisationController extends Controller
     public function destroy(string $id)
     {
         //
-        VehiculeUtilisation::destroy($id); 
+        $vehicule = VehiculeUtilisation::findOrFail($id);
+        $vehicule->delete();
+        $historique = Historique::create([
+            'titre' => 'Gestion de véhicule',
+            'description' => 'Suppression de l\'utilisation du véhicule ' . $vehicule->materiel->type->nom . '-' . $vehicule->materiel->caracteristiques,
+            'date_heure' => now(),
+            'user_id' => Auth::user()->id,
+        ]);
+        $historique->save();
         return response()->json(null, 204);
     }
 }
