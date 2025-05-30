@@ -13,7 +13,7 @@ class HistoriqueController extends Controller
      */
     public function index()
     {
-        $historiques = Historique::all();
+        $historiques = Historique::with('user')->orderBy('date_heure', 'desc')->get();
         return response()->json($historiques);
     }
 
@@ -35,7 +35,7 @@ class HistoriqueController extends Controller
     public function show(string $id)
     {
         //
-        $historique = Historique::find($id);
+        $historique = Historique::with('user')->find($id);
         return response()->json($historique);
     }
 
