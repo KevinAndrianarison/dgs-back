@@ -22,6 +22,7 @@ class Materiel extends Model
     public function region() { return $this->belongsTo(Region::class); }
     public function responsable() { return $this->belongsTo(User::class, 'responsable_id'); }
     public function appartenance() { return $this->belongsTo(Appartenance::class, 'appartenance_id'); }
+    public function photos() { return $this->hasMany(Photo::class); }
 
     public function utilisations()
     {
