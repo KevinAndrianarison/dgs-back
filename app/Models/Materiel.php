@@ -12,7 +12,7 @@ class Materiel extends Model
         'numero', 'numero_reference', 'caracteristiques', 'marque',
         'numero_serie', 'numero_imei', 'montant', 'date_acquisition',
         'date_transfert', 'lieu_affectation', 'etat', 'categorie_id',
-        'type_id', 'source_id', 'reference_id', 'region_id', 'responsable_id','appartenance_id'
+        'type_id', 'source_id', 'reference_id', 'region_id', 'responsable_id','appartenance_id','datelimiteassurance'
     ];
 
     public function categorie() { return $this->belongsTo(Categorie::class); }

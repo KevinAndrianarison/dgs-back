@@ -168,7 +168,7 @@ class MaterielController extends Controller
             'numero', 'categorie_id', 'type_id', 'marque', 'caracteristiques', 
             'etat', 'montant', 'numero_serie', 'numero_imei', 'region_id', 
             'responsable_id', 'date_acquisition', 'lieu_affectation', 
-            'source_id', 'reference_id', 'appartenance_id'
+            'source_id', 'reference_id', 'appartenance_id', 'datelimiteassurance'
         ]);
 
         $materiel->update($validFields);
