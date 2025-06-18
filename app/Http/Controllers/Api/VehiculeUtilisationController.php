@@ -17,7 +17,13 @@ class VehiculeUtilisationController extends Controller
     public function index()
     {
         //
-        return response()->json(VehiculeUtilisation::all());
+        return response()->json(VehiculeUtilisation::orderBy('date', 'desc')->get());
+    }
+
+    public function getPlannificationByIdMateriel($id)
+    {
+        //
+        return response()->json(VehiculeUtilisation::where('isplannification', true)->where('materiel_id', $id)->orderBy('date', 'desc')->with('materiel')->get());
     }
 
     /**
@@ -43,7 +49,7 @@ class VehiculeUtilisationController extends Controller
     public function show(string $id)
     {
         //
-        return response()->json(VehiculeUtilisation::with('materiel')->findOrFail($id));
+        return response()->json(VehiculeUtilisation::with('materiel')->orderBy('date', 'desc')->findOrFail($id));
     }
 
     /**

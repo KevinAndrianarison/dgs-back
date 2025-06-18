@@ -53,6 +53,8 @@ Route::apiResource('vehicules', VehiculeUtilisationController::class);
 
 Route::apiResource('details-supplies', DetailsSupplyController::class);
 
+Route::get('vehicules/plannification/{id}', [VehiculeUtilisationController::class, 'getPlannificationByIdMateriel']);
+
 Route::apiResource('historiques', HistoriqueController::class);
 
 Route::middleware('auth:api')->group(function () {

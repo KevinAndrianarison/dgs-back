@@ -11,7 +11,7 @@ class VehiculeUtilisation extends Model
     protected $fillable = [
         'materiel_id', 'date', 'chef_missionnaire', 'lieu', 'activite',
         'carburant', 'immatriculation', 'km_depart', 'km_arrivee',
-        'total_km', 'qtt_litre', 'pu_ariary', 'montant'
+        'total_km', 'qtt_litre', 'pu_ariary', 'montant', 'isplannification'
     ];
 
     public function materiel()
