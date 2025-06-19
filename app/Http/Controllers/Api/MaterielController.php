@@ -11,6 +11,8 @@ use App\Models\Historique;
 use App\Models\Region;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Photo;
+use Illuminate\Support\Facades\Storage;
+
 
 class MaterielController extends Controller
 {
