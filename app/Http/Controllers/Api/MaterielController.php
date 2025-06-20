@@ -96,6 +96,12 @@ class MaterielController extends Controller
     if (isset($data['montant']) && ($data['montant'] === "" || $data['montant'] === "null")) {
         $data['montant'] = null;
     }
+    if (isset($data['taux_amortissement']) && ($data['taux_amortissement'] === "" || $data['taux_amortissement'] === "null")) {
+        $data['taux_amortissement'] = null;
+    }
+    if (isset($data['valeur_net']) && ($data['valeur_net'] === "" || $data['valeur_net'] === "null")) {
+        $data['valeur_net'] = null;
+    }
     if (isset($data['source_id']) && ($data['source_id'] === "" || $data['source_id'] === "null")) {
         $data['source_id'] = null;
     }
@@ -172,7 +178,7 @@ class MaterielController extends Controller
             'responsable_id', 'date_acquisition', 'lieu_affectation', 
             'source_id', 'reference_id', 'appartenance_id', 'datelimiteassurance'
         ]);
-
+        $validFields['valeur_net'] = $request->montant - ($request->montant * $materiel->taux_amortissement / 100);
         $materiel->update($validFields);
         $nomType = TypeMateriel::findOrFail($materiel->type_id)->nom;
         $nomRegion = Region::findOrFail($materiel->region_id)->nom;
